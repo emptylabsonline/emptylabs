@@ -1,0 +1,184 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+    /* Padding bottom will be added to account for the fixed footer */
+}
+
+.fixed-header-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    z-index: 1000;
+    padding-bottom: 5px; /* Minimal space after subheader */
+}
+
+.header-content-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px 20px 0px 20px;
+    box-sizing: border-box;
+}
+
+.main-content-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    /* Adjust padding-top based on your fixed header's actual height! */
+    padding-top: 90px; /* Example: Estimate ~70px header + 20px space */
+    /* Padding-bottom will be added to account for the fixed footer */
+    /* This will be dynamically calculated or you set it based on footer height */
+    padding-bottom: 60px; /* Example: Estimate ~40px footer + 20px space */
+}
+
+header h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    color: #333;
+}
+
+/* --- Scrolling Text --- */
+.scrolling-text-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap; /* Keep the p tag content on one line */
+    padding: 5px 0;
+    margin: 0 0 5px 0;
+}
+
+.scrolling-text {
+    /* The p tag needs to be explicitly inline-block or block for animation */
+    display: inline-block; /* Changed from block to allow seamless with duplicated text */
+    /* If using duplicated text, padding-left: 100% is not needed.
+       The animation will shift the block of duplicated text. */
+    /* padding-left: 100%; REMOVED */
+    animation: scroll-left-wrapped 45s linear infinite; /* Slower: 45s * 2 (for duplicated content) or adjust as desired */
+    font-size: 1.1em;
+    color: #555;
+    /* The text itself will be duplicated in HTML, so the parent P will be ~200% width of its content */
+}
+
+/* New animation for wrapped/seamless scrolling */
+@keyframes scroll-left-wrapped {
+    0% {
+        transform: translateX(0); /* Starts with the first instance of text visible */
+    }
+    100% {
+        transform: translateX(-50%); /* Scrolls left by the width of ONE instance of the text */
+                                     /* because the <p> element now contains two instances. */
+    }
+}
+
+
+.gif-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.gif-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.things-done-section {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.things-done-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    color: #333;
+}
+
+/* --- Image Gallery - 4x1 Layout --- */
+.image-gallery {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to ensure 4x1, images will shrink */
+    justify-content: space-between; /* Spreads images out */
+    gap: 10px; /* Space between images */
+}
+
+.image-gallery img {
+    width: calc(25% - 8px); /* (10px gap * 3 gaps) / 4 images = 7.5px. Adjusted to 8px for safety. */
+                            /* This ensures 4 images fit with gaps. */
+    height: auto;
+    object-fit: cover;
+    /* max-width: 150px; REMOVED - this was likely causing the 2x2 or limiting shrinkage */
+}
+
+/* --- Footer --- */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ddd; /* A slightly different background for the footer */
+    z-index: 1000;
+    padding-top: 5px; /* Minimal space */
+    padding-bottom: 5px; /* Minimal space */
+    border-top: 1px solid #ccc; /* Optional: a subtle top border */
+}
+
+.footer-content-wrapper {
+    width: 100%; /* Default for portrait */
+    margin: 0 auto; /* Center the content */
+    text-align: center;
+    padding: 0 20px; /* Horizontal padding */
+    box-sizing: border-box;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.8em; /* "Tiny" text */
+    color: #444;
+}
+
+
+/* --- Responsive Design --- */
+@media (orientation: landscape) {
+    .header-content-wrapper,
+    .main-content-container, /* Main content area also becomes middle third */
+    .footer-content-wrapper {  /* Footer content also becomes middle third */
+        width: 33.33%;
+    }
+
+    /* Scrolling text animation speed can be adjusted for landscape if needed */
+    /* .scrolling-text {
+        animation: scroll-left-wrapped 120s linear infinite;
+    } */
+
+    /* For the image gallery in landscape (which is 33.33% width):
+       The 4 images will still try to fit in one row due to flex-wrap: nowrap
+       and width: calc(25% - 8px), making them very small.
+       If this is too small, you might reconsider allowing them to wrap (e.g., 2x2)
+       specifically for landscape by changing flex-wrap or image width here.
+       For now, it will strictly follow the 4x1 within the narrower column. */
+    /* Example: If you wanted 2x2 in landscape's narrow view:
+    .image-gallery {
+        flex-wrap: wrap;
+    }
+    .image-gallery img {
+        width: calc(50% - 5px); // For 2 images per row with a 10px gap
+    }
+    */
+}
+
+/* Fallback for when JavaScript is not used to set padding:
+   Manually measure the height of .fixed-header-area and .footer, then set
+   padding-top and padding-bottom on .main-content-container.
+   These are ESTIMATES. Please measure and adjust. */
+/*
+   Example Calculation:
+   Header: h1 (40px) + subheader (20px) + paddings/margins (~30px) = ~90px.
+   Footer: p (13px) + paddings (~12px) = ~25px.
+   So, main-content-container needs:
+   padding-top: ~110px (90 + 20 buffer)
+   padding-bottom: ~45px (25 + 20 buffer)
+   I've updated these directly in .main-content-container for now.
+*/
